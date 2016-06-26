@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HeroService } from './hero.service';
 
 const num: Number = 2;
 
@@ -32,14 +33,18 @@ const HEROES2 = HEROES.slice(0);
         <button (click)="onReset()">Reset</button>
         <input [(ngModel)]="newHero" placeholder="new hero name" />
         <button (click)="onAdd(newHero)">Add</button>
-    `
+    `,
+    providers: [HeroService],
 })
 
 export class AppComponent { 
+    constructor(private heroService: HeroService) {
+        
+    }
     title = 'Tour of heros';
-    heroes = HEROES;
+    heroes = this.heroService.getHeroes();
     newHero = '';
-    oldHeroes = this.heroes.map((hero) => Object.assign({}, hero));
+    oldHeroes = this.heroService.cloneHeroes(this.heroes);
     hero: Hero = {
         id: 1,
         name: 'Windstorm'
@@ -49,7 +54,7 @@ export class AppComponent {
         // this.oldHeroes = this.heroes.slice(0);
     }
     onReset() {
-        this.heroes = this.oldHeroes.map((hero) => Object.assign({}, hero));
+        this.heroes = this.heroService.cloneHeroes(this.oldHeroes);
     }
     onAdd() {
         const id = this.heroes[this.heroes.length - 1].id + 1;

@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var hero_service_1 = require('./hero.service');
 var num = 2;
 var Hero = (function () {
     function Hero(id, name) {
@@ -26,11 +27,12 @@ var HEROES = [
 ];
 var HEROES2 = HEROES.slice(0);
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(heroService) {
+        this.heroService = heroService;
         this.title = 'Tour of heros';
-        this.heroes = HEROES;
+        this.heroes = this.heroService.getHeroes();
         this.newHero = '';
-        this.oldHeroes = this.heroes.map(function (hero) { return Object.assign({}, hero); });
+        this.oldHeroes = this.heroService.cloneHeroes(this.heroes);
         this.hero = {
             id: 1,
             name: 'Windstorm'
@@ -45,7 +47,7 @@ var AppComponent = (function () {
         // this.oldHeroes = this.heroes.slice(0);
     };
     AppComponent.prototype.onReset = function () {
-        this.heroes = this.oldHeroes.map(function (hero) { return Object.assign({}, hero); });
+        this.heroes = this.heroService.cloneHeroes(this.oldHeroes);
     };
     AppComponent.prototype.onAdd = function () {
         var id = this.heroes[this.heroes.length - 1].id + 1;
@@ -54,9 +56,10 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: "\n        <h1>My First Angular " + num + " App</h1>\n        <h2>{{hero.name}} details!</h2>\n        <li *ngFor=\"let hero of heroes\">{{hero.id}} - {{hero.name}}</li>\n        <div *ngFor=\"let hero of heroes\">\n             <input [(ngModel)]=\"hero.name\" (keydown)=\"onChange(hero.name)\" placeholder=\"name\" />\n        </div>\n        <button (click)=\"onReset()\">Reset</button>\n        <input [(ngModel)]=\"newHero\" placeholder=\"new hero name\" />\n        <button (click)=\"onAdd(newHero)\">Add</button>\n    "
+            template: "\n        <h1>My First Angular " + num + " App</h1>\n        <h2>{{hero.name}} details!</h2>\n        <li *ngFor=\"let hero of heroes\">{{hero.id}} - {{hero.name}}</li>\n        <div *ngFor=\"let hero of heroes\">\n             <input [(ngModel)]=\"hero.name\" (keydown)=\"onChange(hero.name)\" placeholder=\"name\" />\n        </div>\n        <button (click)=\"onReset()\">Reset</button>\n        <input [(ngModel)]=\"newHero\" placeholder=\"new hero name\" />\n        <button (click)=\"onAdd(newHero)\">Add</button>\n    ",
+            providers: [hero_service_1.HeroService],
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [hero_service_1.HeroService])
     ], AppComponent);
     return AppComponent;
 }());
