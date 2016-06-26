@@ -11,7 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var num = 2;
 var Hero = (function () {
-    function Hero() {
+    function Hero(id, name) {
+        this.id = id;
+        this.name = name;
     }
     return Hero;
 }());
@@ -27,6 +29,7 @@ var AppComponent = (function () {
     function AppComponent() {
         this.title = 'Tour of heros';
         this.heroes = HEROES;
+        this.newHero = '';
         this.oldHeroes = this.heroes.map(function (hero) { return Object.assign({}, hero); });
         this.hero = {
             id: 1,
@@ -44,10 +47,14 @@ var AppComponent = (function () {
     AppComponent.prototype.onReset = function () {
         this.heroes = this.oldHeroes.map(function (hero) { return Object.assign({}, hero); });
     };
+    AppComponent.prototype.onAdd = function () {
+        var id = this.heroes[this.heroes.length - 1].id + 1;
+        this.heroes.push(new Hero(id, this.newHero));
+    };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: "\n        <h1>My First Angular " + num + " App</h1>\n        <h2>{{hero.name}} details!</h2>\n        <li *ngFor=\"let hero of heroes\">{{hero.id}} - {{hero.name}}</li>\n        <div *ngFor=\"let hero of heroes\">\n             <input [(ngModel)]=\"hero.name\" (keydown)=\"onChange(hero.name)\" placeholder=\"name\" />\n        </div>\n        <button (click)=\"onReset()\">Reset</button>\n    "
+            template: "\n        <h1>My First Angular " + num + " App</h1>\n        <h2>{{hero.name}} details!</h2>\n        <li *ngFor=\"let hero of heroes\">{{hero.id}} - {{hero.name}}</li>\n        <div *ngFor=\"let hero of heroes\">\n             <input [(ngModel)]=\"hero.name\" (keydown)=\"onChange(hero.name)\" placeholder=\"name\" />\n        </div>\n        <button (click)=\"onReset()\">Reset</button>\n        <input [(ngModel)]=\"newHero\" placeholder=\"new hero name\" />\n        <button (click)=\"onAdd(newHero)\">Add</button>\n    "
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);

@@ -3,6 +3,10 @@ import { Component } from '@angular/core';
 const num: Number = 2;
 
 export class Hero {
+    constructor(id, name) {
+        this.id = id;
+        this.name = name;
+    }
     id: number;
     name: string;
 }
@@ -26,12 +30,15 @@ const HEROES2 = HEROES.slice(0);
              <input [(ngModel)]="hero.name" (keydown)="onChange(hero.name)" placeholder="name" />
         </div>
         <button (click)="onReset()">Reset</button>
+        <input [(ngModel)]="newHero" placeholder="new hero name" />
+        <button (click)="onAdd(newHero)">Add</button>
     `
 })
 
 export class AppComponent { 
     title = 'Tour of heros';
     heroes = HEROES;
+    newHero = '';
     oldHeroes = this.heroes.map((hero) => Object.assign({}, hero));
     hero: Hero = {
         id: 1,
@@ -43,5 +50,9 @@ export class AppComponent {
     }
     onReset() {
         this.heroes = this.oldHeroes.map((hero) => Object.assign({}, hero));
+    }
+    onAdd() {
+        const id = this.heroes[this.heroes.length - 1].id + 1;
+        this.heroes.push(new Hero(id, this.newHero));
     }
 }
